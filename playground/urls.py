@@ -1,34 +1,16 @@
+# urls.py
+
 from django.urls import path, include
-from . import views  # make sure views.py exists
-from django.urls import path
 from rest_framework.routers import DefaultRouter
 from .views import ProductViewSet, CategoryViewSet
+from . import views  # for other non-API views like index
 
-router = DefaultRouter()
-router.register('products', ProductViewSet)
-router.register('categories', CategoryViewSet)
-
-urlpatterns = router.urls
-
-# playground/urls.py
-
-urlpatterns = [
-    path('', views.index, name='index'),  # this will match /playground/
-]
-
+# Create a single router and register the viewsets
 router = DefaultRouter()
 router.register(r'products', ProductViewSet, basename='products')
 router.register(r'categories', CategoryViewSet, basename='categories')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-]
-
-# Create a router and register our viewsets
-router = DefaultRouter()
-router.register(r'products', ProductViewSet, basename='product')
-router.register(r'categories', CategoryViewSet, basename='category')
-
-urlpatterns = [
-    path('', include(router.urls)),
+    path('', views.index, name='index'),  # your non-API view
+    path('api/', include(router.urls)),   # API routes
 ]
